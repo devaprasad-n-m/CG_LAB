@@ -1,68 +1,70 @@
+import OpenGL
 from OpenGL.GL import *
-from OpenGL.GLU import *
 from OpenGL.GLUT import *
+from OpenGL.GLU import *
+import math
 
+def sign(num):
+    if (num>0):
+        return 1
+    elif(num==0):
+        return 0
+    else:
+        return -1
 
-def ClearScreen():
-    glClearColor(0.0, 0.0, 0.0, 1.0)
-    gluOrtho2D(-100.0, 100.0, -100.0, 100.0)
+def clearScreen():
+    glClearColor(1.0, 1.0, 1.0, 1.0)
+    gluOrtho2D(-1.0, 1.0,-1.0,1.0)
+
+def line():
+    x1 = int(input('Enter x1: '))
+    y1 = int(input('Enter y1: '))
+    x2 = int(input('Enter x2: '))
+    y2 = int(input('Enter y2: '))
+    x = x1
+    y = y1
+    dx = abs(x2 - x1)
+    dy = abs(y2 - y1)
+    s1 = sign(x2-x1)
+    s2 = sign(y2-y1)
+    if (dy>dx):
+        temp = dx 
+        dx = dy
+        dy = temp
+        interchange = 100
+    else:
+        interchange = 0
+
+    e = (2*dy)-dx
     glClear(GL_COLOR_BUFFER_BIT)
-    glColor3f(0.0, 1.0, 0.0)
-    glPointSize(2.0)
-
-
-def SetPixel(x, y):
+    # points
+    glColor3f(1,0.5,0.6)
+    glPointSize(7.0)
     glBegin(GL_POINTS)
-    glVertex2f(x, y)
+    for i in range(1,dx):
+        glVertex2f(x/100,y/100)
+        while(e>0):
+            if interchange==1:
+                x = x + s1
+            else:
+                y=y+s2
+            e = e-(2*dx)
+        if interchange==1:
+            y=y+s2
+        else:
+            x=x+s1
+        e = e+(2*dy)
     glEnd()
     glFlush()
 
 
-def BresenhamLine(x1, y1, x2, y2):
-
-    if x2 > x1:
-        x, y, xend = x1, y1, x2
-        dx, dy = x2-x1, y2-y1
-    else:
-        x, y, xend = x2, y2, x1
-        dx, dy = x1-x2, y1-y2
-
-    SetPixel(x, y)
-    P = 2*dy-dx
-
-    while x < xend:
-        x = x+1
-        if P < 0:
-            P += 2*dy
-        else:
-            y = y+1
-            P += 2*dy-2*dx
-        SetPixel(x, y)
 
 
-def Main():
-
-    choice = 0
-    while choice != 2:
-        choice = int(input("Enter \n1) Plot a Line \n2) exit \n"))
-        if choice ==1:
-             x1 = float(input("X1 Co-ordinate:"))
-             y1 = float(input("Y1 Co-ordinate:"))
-             x2 = float(input("X2 Co-ordinate:"))
-             y2 = float(input("Y2 Co-ordinate:"))
-             print("starting window....")
-            
-             glutInit(sys.argv)
-             glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB)
-             glutInitWindowSize(500, 500)
-             glutInitWindowPosition(200, 200)
-             glutCreateWindow("Bresenham_Algorithm")
-             glutDisplayFunc(lambda: BresenhamLine(x1, y1, x2, y2))
-             glutIdleFunc(lambda: BresenhamLine(x1, y1, x2, y2))
-             ClearScreen()
-             glutMainLoop()
-        else :
-            print("Invalid Choice")
-        
-
-Main()
+glutInit()
+glutInitDisplayMode(GLUT_RGB)
+glutCreateWindow("Bresenham")
+glutInitWindowSize(200, 200)
+glutInitWindowPosition(100, 100)
+glutDisplayFunc(line)
+clearScreen()
+glutMainLoop()
