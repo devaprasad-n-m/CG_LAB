@@ -11,7 +11,7 @@ def ClearScreen():
     glColor3f(0.0, 1.0, 0.0)
     glPointSize(5.0)
 
-def SetPixel(x, y):
+def SetPixel(x, y):             #helps plot the point
     glBegin(GL_POINTS)
     glVertex2f(x, y)
     glEnd()
@@ -51,10 +51,10 @@ def NonPolarEllipse(a,b,xc,yc):
 
 def Main():
     print("Ellipse Drawing")
-    a= float(input("Rx = "))
-    b= float(input("Ry = "))
-    xc= float(input("Xc = "))
-    yc= float(input("Yc = "))
+    a= float(input("Length of Semimajor axis Rx = "))
+    b= float(input("Length of Semiminor axis Ry = "))
+    xc= float(input("Enter the x coordinates of center Xc = "))
+    yc= float(input("Enter the y coordinates of center Yc = "))
     choice = int(input("1) Polar Algorithm \n2) Non Polar Algorithm \n"))
     print("starting window....")
 
@@ -62,7 +62,7 @@ def Main():
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB)
     glutInitWindowSize(500, 500)
     glutInitWindowPosition(200, 200)
-    glutCreateWindow("Ellipse")
+    glutCreateWindow("Ellipse Drawing | Polar |Nonpolar ")
     if choice == 1:
          glutDisplayFunc(lambda: PolarEllipse(a,b,xc,yc))
 
